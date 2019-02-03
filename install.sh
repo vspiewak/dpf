@@ -88,6 +88,8 @@ dpf_do_install() {
   YELLOW='\033[0;33m'
   local BLUE
   BLUE='\033[0;34m'
+  local GREY
+  GREY='\033[0;90m'
   local NC
   NC='\033[0m'
 
@@ -99,7 +101,7 @@ dpf_do_install() {
 
   mkdir -p "${INSTALL_DIR}"
 
-  echo "🚚 Fetching script"
+  echo -e "${GREY}[1/2]${NC} 🚚 Fetching script"
 
   dpf_download -s "${SOURCE_URL}" -o "${INSTALL_DIR}/dpf.sh"
   chmod a+x "${INSTALL_DIR}/dpf.sh"
@@ -110,7 +112,7 @@ dpf_do_install() {
   local ALIAS_STR
   ALIAS_STR="\\nalias dpf='~/.dpf/dpf.sh'\\n"
 
-  echo "🔗 Making alias"
+  echo -e "${GREY}[2/2]${NC} 🔗 Making alias"
 
   if [ -z "${DPF_PROFILE-}" ] ; then
     command printf "└─ ${YELLOW}warning${NC} profile not found.\n"
