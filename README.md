@@ -21,11 +21,11 @@ dpf <container-name> <port>
 To install or update dpf, you can use the [install script](install.sh) using cURL:
 
 ```sh
-curl -o- https://raw.githubusercontent.com/vspiewak/dpf/master/dpf.sh | bash
+curl -o- https://raw.githubusercontent.com/vspiewak/dpf/master/install.sh | bash
 ```
 
 or Wget:
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/vspiewak/dpf/master/dpf.sh | bash
+wget -qO- https://raw.githubusercontent.com/vspiewak/dpf/master/install.sh | bash
 ```
