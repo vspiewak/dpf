@@ -2,6 +2,8 @@
 
 `kubctl port-forward` for docker
 
+Tiny shell script to port-forward a local port to a specified [Docker](https://www.docker.com) container **already running**.
+
 
 ## Usage
 
@@ -9,7 +11,7 @@
 dpf <container-name> <local-port> <container-port>
 ```
 
-or
+or simply:
 
 ```sh
 dpf <container-name> <port>
