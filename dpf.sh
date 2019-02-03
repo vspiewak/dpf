@@ -50,7 +50,7 @@ fi
 
 NETWORK_NAME=$(docker inspect ${CONTAINER_NAME} | jq -r '.[] | .HostConfig.NetworkMode')
 
-echo "forwarding localhost:${FORWARD_PORT} to ${CONTAINER_NAME}:${CONTAINER_PORT} ..."
+echo "🚀 forwarding localhost:${FORWARD_PORT} to ${CONTAINER_NAME}:${CONTAINER_PORT} ..."
 
 docker run \
   -it --rm \
