@@ -1,6 +1,6 @@
 # docker port forward
 
-`kubctl port-forward` like for docker
+`kubctl port-forward` for docker
 
 
 ## Usage
