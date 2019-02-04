@@ -99,38 +99,40 @@ dpf_do_install() {
   local SOURCE_URL
   SOURCE_URL="$(dpf_source)"
 
+  echo -e "${GREY}[1/6]${NC} 📂 Creating directory"
   mkdir -p "${INSTALL_DIR}"
 
-  echo -e "${GREY}[1/2]${NC} 🚚 Fetching script"
-
+  echo -e "${GREY}[2/6]${NC} 🚚 Downloading script"
   dpf_download -s "${SOURCE_URL}" -o "${INSTALL_DIR}/dpf.sh"
   chmod a+x "${INSTALL_DIR}/dpf.sh"
 
+  echo -e "${GREY}[3/6]${NC} 🔎 Detecting profile"
   local DPF_PROFILE
   DPF_PROFILE="$(dpf_detect_profile)"
 
+  echo -e "${GREY}[4/6]${NC} 📌 Making alias"
   local ALIAS_STR
-  ALIAS_STR="\\nalias dpf='~/.dpf/dpf.sh'\\n"
-
-  echo -e "${GREY}[2/2]${NC} 🔗 Making alias"
+  ALIAS_STR="alias dpf='~/.dpf/dpf.sh'"
 
   if [ -z "${DPF_PROFILE-}" ] ; then
-    command printf "└─ ${YELLOW}warning${NC} profile not found.\n"
-    command printf "append the following lines to the correct file yourself:\n"
-    command printf "${ALIAS_STR}"
-    echo
+    command printf "${YELLOW}warn${NC}     Profile not found 🙈\n"
+    command printf "${YELLOW}warn${NC}     Append the following line to the correct file:\n"
+    command printf "${YELLOW}warn${NC}\n"
+    command printf "${YELLOW}warn${NC}     ${ALIAS_STR}\n"
+    command printf "${YELLOW}warn${NC}\n"
   else
     if ! command grep -qc '/dpf.sh' "${DPF_PROFILE}"; then
-      command printf "└─ ${BLUE}info${NC} appending dpf alias string to ${DPF_PROFILE}\n"
-      command printf "${ALIAS_STR}" >> "${DPF_PROFILE}"
+      command printf "${BLUE}info${NC}     Appending alias to ${DPF_PROFILE}\n"
+      command printf "\n${ALIAS_STR}\n" >> "${DPF_PROFILE}"
     else
-      command printf "└─ ${BLUE}info${NC} dpf alias string already in ${DPF_PROFILE}\n"
+      command printf "${BLUE}info${NC}     Alias already in ${DPF_PROFILE}\n"
     fi
   fi
 
+  echo -e "${GREY}[5/6]${NC} 🚿 Cleaning env"
   dpf_reset
 
-  echo "✨ Done"
+  echo -e "${GREY}[6/6]${NC} 🎉 Done"
 }
 
 #
