@@ -4,11 +4,6 @@ CONTAINER_NAME=$1
 FORWARD_PORT=$2
 CONTAINER_PORT=$3
 
-if ! [ -x "$(command -v jq)" ]; then
-  echo "Error: jq is not installed." >&2
-  exit 1
-fi
-
 if [ "$#" -lt 2 ]; then
   echo "Usage: ${0} container_name port_to_forward container_port" >&2
   exit 2
@@ -33,12 +28,12 @@ if [ ! "$(docker ps -q -f name=${CONTAINER_NAME})" ]; then
   exit 5
 fi
 
-if ! $(docker inspect ${CONTAINER_NAME} | jq -r '.[] | .State.Running'); then
+if ! $(docker inspect ${CONTAINER_NAME} -f '{{.State.Running}}'); then
   echo "Error: container ${CONTAINER_NAME} not running !" >&2
   exit 6
 fi
 
-if ! $(docker inspect ${CONTAINER_NAME} | jq -r '.[] | .NetworkSettings.Ports | has("'"${CONTAINER_PORT}"'/tcp")'); then
+if [[ -z $(docker inspect ${CONTAINER_NAME} -f '{{range $i, $x := $.NetworkSettings.Ports}}{{if eq $i "'"${CONTAINER_PORT}"'/tcp" }}{{$x}}{{end}}{{end}}') ]]; then
   echo "Error: container ${CONTAINER_NAME} doesn't interact with port ${CONTAINER_PORT} !" >&2
   exit 7
 fi
@@ -48,7 +43,7 @@ if $(nc 127.0.0.1 ${FORWARD_PORT} < /dev/null); then
   exit 8
 fi
 
-NETWORK_NAME=$(docker inspect ${CONTAINER_NAME} | jq -r '.[] | .HostConfig.NetworkMode')
+NETWORK_NAME=$(docker inspect ${CONTAINER_NAME} -f '{{.HostConfig.NetworkMode}}')
 
 echo "🚀 forwarding localhost:${FORWARD_PORT} to ${CONTAINER_NAME}:${CONTAINER_PORT} ..."
 
