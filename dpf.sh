@@ -38,7 +38,7 @@ if ! $(docker inspect ${CONTAINER_NAME} | jq -r '.[] | .State.Running'); then
   exit 6
 fi
 
-if ! $(docker inspect cvaden-users-db | jq -r '.[] | .NetworkSettings.Ports | has("'"${CONTAINER_PORT}"'/tcp")'); then
+if ! $(docker inspect ${CONTAINER_NAME} | jq -r '.[] | .NetworkSettings.Ports | has("'"${CONTAINER_PORT}"'/tcp")'); then
   echo "Error: container ${CONTAINER_NAME} doesn't interact with port ${CONTAINER_PORT} !" >&2
   exit 7
 fi
